@@ -1,0 +1,88 @@
+---
+- name: "Anormal X-ray no Tuberculosis"
+  path: "dataset/anormal-xr-no_tb"
+  include: true
+  subsets:
+    - include: true
+      abnormal: true
+      tuberculosis: false
+      data_type: ".png"
+      subset_path: ""
+- name: "Chest X-Ray Pneumonia, COVID-19 and Tuberculosis"
+  path: "dataset/chest-xr-pnm-cvd19-tb"
+  include: true
+  subsets:
+    - include: false
+      abnormal: true
+      tuberculosis: false
+      data_type: ".jpg"
+      subset_path: "test/COVID19"
+    - include: true
+      abnormal: false
+      tuberculosis: false
+      data_type: ".jpeg"
+      subset_path: "test/NORMAL"
+    - include: true
+      abnormal: true
+      tuberculosis: false
+      data_type: ".jpeg"
+      subset_path: "test/PNEUMONIA"
+    - include: true
+      abnormal: true
+      tuberculosis: true
+      data_type: ".png"
+      subset_path: "test/TURBERCULOSIS"
+    - include: false
+      abnormal: true
+      tuberculosis: false
+      data_type: ".jpg"
+      subset_path: "train/COVID19"
+    - include: true
+      abnormal: false
+      tuberculosis: false
+      data_type: ".jpeg"
+      subset_path: "train/NORMAL"
+    - include: true
+      abnormal: true
+      tuberculosis: false
+      data_type: ".jpeg"
+      subset_path: "train/PNEUMONIA"
+    - include: true
+      abnormal: true
+      tuberculosis: true
+      data_type: ".png"
+      subset_path: "train/TURBERCULOSIS"
+    - include: false
+      abnormal: true
+      tuberculosis: false
+      data_type: ".jpg"
+      subset_path: "val/COVID19"
+    - include: true
+      abnormal: false
+      tuberculosis: false
+      data_type: ".jpeg"
+      subset_path: "val/NORMAL"
+    - include: true
+      abnormal: true
+      tuberculosis: false
+      data_type: ".jpeg"
+      subset_path: "val/PNEUMONIA"
+    - include: true
+      abnormal: true
+      tuberculosis: true
+      data_type: ".png"
+      subset_path: "val/TURBERCULOSIS"
+- name: "Tuberculosis Chest Radiography Database"
+  path: "dataset/TB_Chest_Radiography_Database"
+  include: true
+  subsets:
+    - include: true
+      abnormal: false
+      tuberculosis: false
+      data_type: ".png"
+      subset_path: "Normal"
+    - include: true
+      abnormal: true
+      tuberculosis: true
+      data_type: ".png"
+      subset_path: "Tuberculosis"
