@@ -4,6 +4,7 @@ import pandas as pd
 import yaml
 import logging
 from os import path, listdir
+import sys
 
 from .errors import DatasetDescriptionError, DataframeGenerationError
 
@@ -19,6 +20,8 @@ _DATASET_KEYS = [_NAME, _PATH, _INCLUDE, _SUBSETS]
 _SUBSET_KEYS = [_INCLUDE, _TUBERCULOSIS, _ABNORMAL, _DATA_TYPE, _SUBSET_PATH]
 
 _FILE = "file"
+
+_CSV = ".csv"
 
 
 def load_from_yaml(path, safe_load=True) -> dict:
@@ -85,7 +88,9 @@ def _validate_dataset_description(dataset_description) -> bool:
     return True
 
 
-def generate_dataframe(dataset_description: dict, validade=True) -> pd.DataFrame:
+def generate_dataframe(
+    dataset_description: dict, validade=True, save_path=None
+) -> pd.DataFrame:
     if validade:
         logging.debug(f"Validate Dataset: {validade}")
         _validate_dataset_description(dataset_description)
@@ -128,16 +133,6 @@ def generate_dataframe(dataset_description: dict, validade=True) -> pd.DataFrame
 
                         for image_file in image_files:
                             if path.splitext(image_file)[1] == subset.get(_DATA_TYPE):
-
-                                # dataframe_temp = dataframe_temp.append(
-                                #     {
-                                #         _FILE: image_file,
-                                #         _PATH: subset_full_path,
-                                #         _ABNORMAL: subset.get(_ABNORMAL),
-                                #         _TUBERCULOSIS: subset.get(_TUBERCULOSIS),
-                                #     },
-                                #     ignore_index=True,
-                                # )
                                 data_name.append(image_file)
                                 data_path.append(
                                     path.join(subset_full_path, image_file)
@@ -173,15 +168,25 @@ def generate_dataframe(dataset_description: dict, validade=True) -> pd.DataFrame
                         f"An error occurred while generating dataframe from subset: {subset.get(_SUBSET_PATH)}. From dataset: {dataset.get(_NAME)}"
                     )
 
+    if save_path is not None:
+        dataframe.to_csv(save_path, index=False)
+
     return dataframe
 
 
 def load_dataframe(dataframe_path, force_df_gen=False) -> pd.DataFrame:
     logging.debug(f"Force dataframe generation: {force_df_gen}")
 
+    if not path.splitext(dataframe_path)[1] == _CSV:
+        logging.error(f"Dataframe must be a csv file")
+        logging.warning(f"Unable to proceed, finishing execution.")
+        sys.exit()
+
     if force_df_gen or not path.isfile(dataframe_path):
         logging.info("Dataframe not found or Force option on.")
-        return generate_dataframe(load_from_yaml(dataframe_path), validade=False)
+        return generate_dataframe(
+            load_from_yaml(dataframe_path), validade=False, save_path=dataframe_path
+        )
 
     logging.info("Loading dataframe from file")
     return pd.read_csv(dataframe_path)
