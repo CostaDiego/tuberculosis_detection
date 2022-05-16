@@ -89,7 +89,7 @@ def _validate_dataset_description(dataset_description) -> bool:
 
 
 def generate_dataframe(
-    dataset_description: dict, validade=True, save_path=None
+    dataset_description: list, validade=True, save_path=None
 ) -> pd.DataFrame:
     if validade:
         logging.debug(f"Validate Dataset: {validade}")
@@ -174,19 +174,13 @@ def generate_dataframe(
     return dataframe
 
 
-def load_dataframe(dataframe_path, force_df_gen=False) -> pd.DataFrame:
-    logging.debug(f"Force dataframe generation: {force_df_gen}")
+def load_dataframe(description_path) -> pd.DataFrame:
+    logging.info(f"Loading Dataframe from dataset description")
 
-    if not path.splitext(dataframe_path)[1] == _CSV:
-        logging.error(f"Dataframe must be a csv file")
-        logging.warning(f"Unable to proceed, finishing execution.")
-        sys.exit()
+    dataset_description = load_from_yaml(description_path)
+    logging.debug("Dataset Description successfully loaded")
 
-    if force_df_gen or not path.isfile(dataframe_path):
-        logging.info("Dataframe not found or Force option on.")
-        return generate_dataframe(
-            load_from_yaml(dataframe_path), validade=False, save_path=dataframe_path
-        )
+    dataframe = generate_dataframe(dataset_description, validade=True, save_path=None)
+    logging.debug("Dataframe successfully loaded")
 
-    logging.info("Loading dataframe from file")
-    return pd.read_csv(dataframe_path)
+    return dataframe
