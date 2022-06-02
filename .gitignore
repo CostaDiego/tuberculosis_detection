@@ -134,3 +134,7 @@ dataset/*
 
 # Ignore prototyping jupyter notebook
 prototyping.ipynb
+
+# Ignore the models folder
+model*/
+model*/*
