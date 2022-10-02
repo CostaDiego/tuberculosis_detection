@@ -1,4 +1,4 @@
-__all__ = ["dataframe"]
+__all__ = ["dataframe", "image"]
 
 from os import path
 import sys

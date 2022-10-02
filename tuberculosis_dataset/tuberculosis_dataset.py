@@ -62,4 +62,4 @@ class TuberculosisDataset(Dataset):
         if len(self.labels_source) == 2:
             labels = self._dataframe.iloc[index][self.labels_source].astype("float")
 
-        return image, torch.tensor(labels)
+        return image, torch.tensor(labels).type(torch.FloatTensor)
