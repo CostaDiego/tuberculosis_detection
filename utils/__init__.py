@@ -10,3 +10,4 @@ if root not in sys.path:
 
 from .dataframe import load_from_yaml, generate_dataframe, load_dataframe
 from .errors import DatasetDescriptionError, DataframeGenerationError
+from .image import show_images
