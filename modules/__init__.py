@@ -1,4 +1,4 @@
 __all__ = ["classifier"]
 
 from .classifier import VGG16DoubleHeadClassifier, VGG16SingleHeadClassifier
-from .utils import get_2heads_criterion
+from .criterion import get_2heads_criterion
