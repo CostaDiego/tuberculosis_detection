@@ -8,21 +8,21 @@ class VGG16DoubleHeadClassifier(nn.Module):
 
         self.abnormal_head = nn.Sequential(
             nn.Linear(25088, 4096),
-            nn.ReLU(inplace=True),
-            nn.Dropout(0.5, inplace=True),
+            nn.ReLU(),
+            nn.Dropout(0.5),
             nn.Linear(4096, 4096),
-            nn.ReLU(inplace=True),
-            nn.Dropout(0.5, inplace=False),
+            nn.ReLU(),
+            nn.Dropout(0.5),
             nn.Linear(4096, 1),
             nn.Sigmoid(),
         )
         self.tuberculosis_head = nn.Sequential(
             nn.Linear(25088, 4096),
-            nn.ReLU(inplace=True),
-            nn.Dropout(0.5, inplace=True),
+            nn.ReLU(),
+            nn.Dropout(0.5),
             nn.Linear(4096, 4096),
-            nn.ReLU(inplace=True),
-            nn.Dropout(0.5, inplace=False),
+            nn.ReLU(),
+            nn.Dropout(0.5),
             nn.Linear(4096, 1),
             nn.Sigmoid(),
         )
@@ -31,7 +31,7 @@ class VGG16DoubleHeadClassifier(nn.Module):
         abnormal = self.abnormal_head(x)
         tuberculosis = self.tuberculosis_head(x)
 
-        return torch.cat((abnormal, tuberculosis), dim=1).type(torch.FloatTensor)
+        return torch.cat((abnormal, tuberculosis), dim=1).type(torch.float)
 
 
 class VGG16SingleHeadClassifier(nn.Module):
@@ -40,11 +40,11 @@ class VGG16SingleHeadClassifier(nn.Module):
 
         self.classifier = nn.Sequential(
             nn.Linear(25088, 4096),
-            nn.ReLU(inplace=True),
-            nn.Dropout(0.5, inplace=True),
+            nn.ReLU(),
+            nn.Dropout(0.5),
             nn.Linear(4096, 4096),
-            nn.ReLU(inplace=True),
-            nn.Dropout(0.5, inplace=False),
+            nn.ReLU(),
+            nn.Dropout(0.5),
             nn.Linear(4096, 1),
             nn.Sigmoid(),
         )
